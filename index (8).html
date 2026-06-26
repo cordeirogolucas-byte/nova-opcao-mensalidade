@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escola de Futebol Nova Opção</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde:#1a7a3e;--verde-claro:#e8f5ee;--verde-med:#c5e3cf;
+  --bg:#f5f6f7;--borda:#dde1e7;--cinza:#6b7280;
+  --texto:#1a1d23;--branco:#ffffff;
+  --vermelho:#c0392b;--verm-claro:#fdf2f0;
+  --amarelo:#d97706;--amar-claro:#fef9ee;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);font-size:14px;line-height:1.5}
+
+/* HEADER */
+header{background:var(--verde);color:white;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.h-logo{display:flex;align-items:center;gap:10px}
+.h-escudo{width:44px;height:44px;border-radius:50%;background:white;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.h-escudo img{width:100%;height:100%;object-fit:contain;padding:2px}
+.h-titulo{font-size:15px;font-weight:700;line-height:1.2}
+.h-titulo span{display:block;font-size:11px;font-weight:400;opacity:.8}
+.h-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:12px}
+
+/* NAV */
+nav{background:var(--branco);border-bottom:1px solid var(--borda);padding:0 24px;display:flex;overflow-x:auto}
+nav button{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-size:13px;font-weight:500;color:var(--cinza);cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s}
+nav button:hover{color:var(--verde)}
+nav button.ativo{color:var(--verde);border-bottom-color:var(--verde);font-weight:600}
+
+/* LAYOUT */
+main{padding:24px;max-width:1100px;margin:0 auto}
+.pagina{display:none}
+.pagina.ativa{display:block}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.card{background:var(--branco);border:1px solid var(--borda);border-radius:10px;padding:18px 20px}
+.card-label{font-size:11px;color:var(--cinza);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.card-val{font-size:28px;font-weight:700;line-height:1}
+.card-sub{font-size:12px;color:var(--cinza);margin-top:4px}
+.cv{color:var(--verde)}.cr{color:var(--vermelho)}.ca{color:var(--amarelo)}
+
+/* TITULO SEÇÃO */
+.titulo-sec{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+
+/* TABELA */
+.tabela-wrap{background:var(--branco);border:1px solid var(--borda);border-radius:10px;overflow:hidden;margin-bottom:24px}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--bg);border-bottom:1px solid var(--borda)}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--cinza);text-transform:uppercase;letter-spacing:.5px}
+td{padding:11px 14px;border-bottom:1px solid var(--borda);font-size:13px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.t-vazio{padding:40px;text-align:center;color:var(--cinza);font-size:13px}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.bi{background:#e0f0ff;color:#1565c0}
+.bm{background:#f3e5f5;color:#6a1b9a}
+.bn{background:#fff8e1;color:#f57f17}
+.bpg{background:#e8f5ee;color:#1a7a3e}
+.bpd{background:#fdf2f0;color:#c0392b}
+.bx{background:#f3f4f6;color:#6b7280}
+
+/* BOTÕES */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:opacity .15s}
+.btn:active{transform:scale(.98)}
+.btn-v{background:var(--verde);color:white}.btn-v:hover{opacity:.88}
+.btn-o{background:transparent;border:1px solid var(--borda);color:var(--texto)}.btn-o:hover{background:var(--bg)}
+.btn-r{background:var(--vermelho);color:white}.btn-r:hover{opacity:.88}
+.btn-a{background:var(--amarelo);color:white}.btn-a:hover{opacity:.88}
+.btn-sm{padding:5px 10px;font-size:12px}
+
+/* FORMULÁRIO */
+.form-card{background:var(--branco);border:1px solid var(--borda);border-radius:10px;padding:24px;margin-bottom:24px}
+.form-tit{font-size:15px;font-weight:700;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--borda)}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:16px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:12px;font-weight:600;color:var(--cinza);text-transform:uppercase;letter-spacing:.4px}
+.fg input,.fg select,.fg textarea{padding:9px 12px;border:1px solid var(--borda);border-radius:7px;font-size:13px;color:var(--texto);background:var(--branco);outline:none;transition:border-color .15s;font-family:inherit}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--verde);box-shadow:0 0 0 3px var(--verde-claro)}
+.fg textarea{resize:vertical;min-height:70px}
+.form-div{font-size:12px;font-weight:600;color:var(--cinza);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 14px;display:flex;align-items:center;gap:10px}
+.form-div::after{content:'';flex:1;height:1px;background:var(--borda)}
+
+/* INFO BOX */
+.info{background:var(--verde-claro);border:1px solid var(--verde-med);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--verde);margin-bottom:20px;line-height:1.6}
+.info.amar{background:var(--amar-claro);border-color:#fcd34d;color:#92400e}
+.info.verm{background:var(--verm-claro);border-color:#f5c6c2;color:var(--vermelho)}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+.modal{background:var(--branco);border-radius:12px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-tit{font-size:16px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--borda);display:flex;align-items:center;justify-content:space-between}
+.modal-x{background:none;border:none;font-size:20px;cursor:pointer;color:var(--cinza);line-height:1}
+.modal-btns{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+
+/* FILTROS */
+.filtros{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filtros input,.filtros select{padding:8px 12px;border:1px solid var(--borda);border-radius:7px;font-size:13px;background:var(--branco);outline:none;font-family:inherit}
+.filtros input:focus,.filtros select:focus{border-color:var(--verde)}
+.filtros input{min-width:200px}
+
+/* COBRANÇA ITEM */
+.cobr{background:var(--branco);border:1px solid var(--borda);border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:12px;flex-wrap:wrap}
+.cobr h4{font-size:14px;font-weight:600}
+.cobr p{font-size:12px;color:var(--cinza);margin-top:2px}
+.cobr-val{font-size:16px;font-weight:700;color:var(--vermelho);white-space:nowrap}
+.cobr-ac{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* RESUMO */
+.resumo{background:var(--bg);border-radius:8px;padding:12px 16px;margin-top:12px}
+.resumo p{font-size:13px;margin:3px 0}
+
+/* CONFIG VENCIMENTO */
+.dias-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:16px 0}
+.dia-btn{background:var(--bg);border:1px solid var(--borda);border-radius:8px;padding:10px 4px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s;color:var(--texto)}
+.dia-btn:hover{border-color:var(--verde);color:var(--verde);background:var(--verde-claro)}
+.dia-btn.selecionado{background:var(--verde);color:white;border-color:var(--verde)}
+
+@media(max-width:600px){
+  main{padding:16px}
+  .form-grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  nav button{padding:12px 10px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-logo">
+    <div class="h-escudo"><img id="logo-img" alt="Logo" /></div>
+    <div class="h-titulo">Escola de Futebol Nova Opção<span>Sistema de Gestão</span></div>
+  </div>
+  <div class="h-badge">Treinos: Ter · Qui · Sáb</div>
+</header>
+
+<nav>
+  <button class="ativo" onclick="irPara('dashboard')">Painel Geral</button>
+  <button onclick="irPara('alunos')">Alunos</button>
+  <button onclick="irPara('inscricao')">Nova Inscrição</button>
+  <button onclick="irPara('cobranca')">Cobranças</button>
+  <button onclick="irPara('inativos')">Ex-Alunos</button>
+  <button onclick="irPara('config')">⚙ Configurações</button>
+</nav>
+
+<main>
+
+<!-- PAINEL GERAL -->
+<div id="pg-dashboard" class="pagina ativa">
+  <div class="cards" id="cards-dash"></div>
+  <div class="titulo-sec">Alunos por Categoria</div>
+  <div class="cards" id="cards-cat"></div>
+  <div class="titulo-sec">Mensalidades em Aberto</div>
+  <div class="tabela-wrap">
+    <table>
+      <thead><tr><th>Aluno</th><th>Categoria</th><th>Mensalidade</th><th>Situação</th></tr></thead>
+      <tbody id="tb-pend-dash"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ALUNOS -->
+<div id="pg-alunos" class="pagina">
+  <div class="filtros">
+    <input type="text" id="busca" placeholder="Buscar por nome..." oninput="renderAlunos()">
+    <select id="fil-cat" onchange="renderAlunos()">
+      <option value="">Todas as categorias</option>
+      <option>Infantil</option><option>Mirim</option><option>Iniciação</option>
+    </select>
+    <select id="fil-sit" onchange="renderAlunos()">
+      <option value="">Todos</option>
+      <option value="Pago">Em dia</option>
+      <option value="Pendente">Com pendência</option>
+    </select>
+  </div>
+  <div class="tabela-wrap">
+    <table>
+      <thead><tr><th>Nome</th><th>Nasc.</th><th>Categoria</th><th>Treino</th><th>Mensalidade</th><th>Situação</th><th>Ações</th></tr></thead>
+      <tbody id="tb-alunos"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- NOVA INSCRIÇÃO -->
+<div id="pg-inscricao" class="pagina">
+  <div class="info">
+    <strong>Valores:</strong> Mensalidade R$ 150,00 · Só Sábado R$ 120,00 · Uniforme R$ 150,00 · Inscrição R$ 100,00<br>
+    Desconto de 10% na mensalidade ao inscrever 2 ou mais alunos do mesmo responsável.
+  </div>
+  <div class="form-card">
+    <div class="form-tit">Dados do Aluno</div>
+    <div class="form-grid">
+      <div class="fg" style="grid-column:span 2">
+        <label>Nome completo</label>
+        <input type="text" id="f-nome" placeholder="Nome do aluno">
+      </div>
+      <div class="fg">
+        <label>Data de nascimento</label>
+        <input type="date" id="f-nasc" onchange="detectarCat()">
+      </div>
+      <div class="fg">
+        <label>Categoria (automático)</label>
+        <input type="text" id="f-cat" readonly style="background:var(--bg);color:var(--cinza)">
+      </div>
+      <div class="fg">
+        <label>Peso (kg)</label>
+        <input type="number" id="f-peso" placeholder="Ex: 42">
+      </div>
+      <div class="fg">
+        <label>Altura (cm)</label>
+        <input type="number" id="f-altura" placeholder="Ex: 155">
+      </div>
+      <div class="fg">
+        <label>Posição</label>
+        <select id="f-pos">
+          <option value="">Selecionar</option>
+          <option>Goleiro</option><option>Lateral direito</option><option>Lateral esquerdo</option>
+          <option>Zagueiro</option><option>Volante</option><option>Meia</option>
+          <option>Meia-atacante</option><option>Atacante</option><option>Ponta direita</option><option>Ponta esquerda</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Dias de treino</label>
+        <select id="f-treino" onchange="calcMens()">
+          <option value="">Selecionar</option>
+          <option value="3dias">Ter, Qui e Sáb — R$ 150,00</option>
+          <option value="sabado">Somente Sábado — R$ 120,00</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-div">Documentos</div>
+    <div class="form-grid">
+      <div class="fg"><label>RG</label><input type="text" id="f-rg" placeholder="000.000.000-0"></div>
+      <div class="fg"><label>CPF</label><input type="text" id="f-cpf" placeholder="000.000.000-00"></div>
+    </div>
+    <div class="form-div">Responsável</div>
+    <div class="form-grid">
+      <div class="fg"><label>Nome do pai</label><input type="text" id="f-pai"></div>
+      <div class="fg"><label>Nome da mãe</label><input type="text" id="f-mae"></div>
+      <div class="fg"><label>Contato do responsável</label><input type="text" id="f-contato" placeholder="(00) 00000-0000"></div>
+      <div class="fg">
+        <label>Irmão já matriculado?</label>
+        <select id="f-irmao" onchange="calcMens()">
+          <option value="nao">Não</option>
+          <option value="sim">Sim — desconto 10%</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-div">Pagamento da Matrícula</div>
+    <div class="form-grid">
+      <div class="fg">
+        <label>Forma de pagamento</label>
+        <select id="f-pgto">
+          <option value="">Selecionar</option>
+          <option>Dinheiro</option><option>PIX</option>
+          <option>Cartão de débito</option><option>Cartão de crédito</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Situação da mensalidade</label>
+        <select id="f-sit">
+          <option value="Pendente">Pendente</option>
+          <option value="Pago">Pago</option>
+        </select>
+      </div>
+    </div>
+    <div id="resumo-mens" class="resumo" style="display:none"></div>
+    <div style="margin-top:20px;display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-o" onclick="limparForm()">Limpar</button>
+      <button class="btn btn-v" onclick="salvarAluno()">✓ Confirmar Inscrição</button>
+    </div>
+  </div>
+</div>
+
+<!-- COBRANÇAS -->
+<div id="pg-cobranca" class="pagina">
+  <div class="info amar">Notifique os responsáveis com mensalidade em aberto. A mensagem é gerada automaticamente para envio via WhatsApp.</div>
+  <div class="titulo-sec">
+    <span>Mensalidades Pendentes</span>
+    <button class="btn btn-v" onclick="notifTodos()">📢 Notificar Todos</button>
+  </div>
+  <div id="lista-cobr"></div>
+</div>
+
+<!-- EX-ALUNOS -->
+<div id="pg-inativos" class="pagina">
+  <div class="info verm">Alunos desligados ficam registrados aqui. O histórico é mantido para controle interno.</div>
+  <div class="tabela-wrap">
+    <table>
+      <thead><tr><th>Nome</th><th>Categoria</th><th>Contato</th><th>Motivo</th><th>Desligado em</th></tr></thead>
+      <tbody id="tb-inativos"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CONFIGURAÇÕES -->
+<div id="pg-config" class="pagina">
+  <div class="form-card" style="max-width:560px">
+    <div class="form-tit">Dia de Vencimento da Mensalidade</div>
+    <p style="font-size:13px;color:var(--cinza);margin-bottom:16px">Toque no dia que as mensalidades vencem todo mês. Esse valor aparece nas cobranças enviadas aos responsáveis.</p>
+    <div class="dias-grid" id="dias-grid"></div>
+    <div id="cfg-ok" class="info" style="display:none"></div>
+  </div>
+  <div class="form-card" style="max-width:560px">
+    <div class="form-tit">Informações da Escola</div>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr">
+      <div class="fg">
+        <label>Chave PIX</label>
+        <input type="text" id="cfg-pix" placeholder="CPF, e-mail ou chave aleatória" oninput="salvarCfg()">
+      </div>
+      <div class="fg">
+        <label>Telefone de contato</label>
+        <input type="text" id="cfg-tel" placeholder="(00) 00000-0000" oninput="salvarCfg()">
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--cinza);margin-top:4px">Esses dados aparecem automaticamente nas mensagens de cobrança.</p>
+  </div>
+</div>
+
+</main>
+
+<!-- MODAL DETALHES -->
+<div id="ov-det" class="overlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <div class="modal-tit">
+      <span id="det-nome">Detalhes</span>
+      <button class="modal-x" onclick="document.getElementById('ov-det').style.display='none'">✕</button>
+    </div>
+    <div id="det-corpo"></div>
+  </div>
+</div>
+
+<!-- MODAL DESLIGAR -->
+<div id="ov-desl" class="overlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <div class="modal-tit">
+      <span>Desligar Aluno</span>
+      <button class="modal-x" onclick="document.getElementById('ov-desl').style.display='none'">✕</button>
+    </div>
+    <p style="margin-bottom:14px;font-size:13px;color:var(--cinza)">O aluno será movido para a lista de ex-alunos.</p>
+    <div class="fg">
+      <label>Motivo do desligamento</label>
+      <textarea id="mot-desl" placeholder="Ex: Mudança de cidade, dificuldades financeiras..."></textarea>
+    </div>
+    <input type="hidden" id="id-desl">
+    <div class="modal-btns">
+      <button class="btn btn-o" onclick="document.getElementById('ov-desl').style.display='none'">Cancelar</button>
+      <button class="btn btn-r" onclick="confirmarDesl()">Desligar Aluno</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOTIFICAÇÃO -->
+<div id="ov-notif" class="overlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <div class="modal-tit">
+      <span>Mensagem de Cobrança</span>
+      <button class="modal-x" onclick="document.getElementById('ov-notif').style.display='none'">✕</button>
+    </div>
+    <p style="font-size:12px;color:var(--cinza);margin-bottom:10px">Copie e envie ao responsável pelo WhatsApp:</p>
+    <textarea id="txt-notif" rows="10" style="width:100%;padding:10px;border:1px solid var(--borda);border-radius:7px;font-size:13px;font-family:inherit;resize:vertical"></textarea>
+    <div class="modal-btns">
+      <button class="btn btn-o" onclick="document.getElementById('ov-notif').style.display='none'">Fechar</button>
+      <button class="btn btn-v" onclick="copiarNotif()">📋 Copiar Texto</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STORAGE =====
+const DB = {
+  alunos:()=> JSON.parse(localStorage.getItem('novalunos')||'[]'),
+  salvarA:(d)=> localStorage.setItem('novalunos',JSON.stringify(d)),
+  inativos:()=> JSON.parse(localStorage.getItem('novinat')||'[]'),
+  salvarI:(d)=> localStorage.setItem('novinat',JSON.stringify(d)),
+  cfg:()=> JSON.parse(localStorage.getItem('novcfg')||'{}'),
+  salvarC:(d)=>{const a=DB.cfg();localStorage.setItem('novcfg',JSON.stringify({...a,...d}))},
+};
+
+// ===== LOGO =====
+(function(){
+  const LOGO_KEY='escola_logo_b64';
+  const img=document.getElementById('logo-img');
+  const saved=localStorage.getItem(LOGO_KEY);
+  if(saved){img.src=saved;return;}
+  // fallback emoji
+  img.parentElement.innerHTML='⚽';
+})();
+
+// ===== NAVEGAÇÃO =====
+const PAGINAS=['dashboard','alunos','inscricao','cobranca','inativos','config'];
+function irPara(p){
+  document.querySelectorAll('.pagina').forEach(x=>x.classList.remove('ativa'));
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('ativo'));
+  document.getElementById('pg-'+p).classList.add('ativa');
+  const idx=PAGINAS.indexOf(p);
+  document.querySelectorAll('nav button')[idx].classList.add('ativo');
+  if(p==='dashboard')renderDash();
+  if(p==='alunos')renderAlunos();
+  if(p==='cobranca')renderCobr();
+  if(p==='inativos')renderInat();
+  if(p==='config')renderConfig();
+}
+
+// ===== CATEGORIAS =====
+function getCategoria(nasc){
+  const ano=new Date(nasc).getFullYear();
+  if(ano>=2010&&ano<=2012)return'Infantil';
+  if(ano>=2012&&ano<=2013)return'Mirim';
+  if(ano>=2014&&ano<=2020)return'Iniciação';
+  return'Fora de faixa';
+}
+function badgeCat(c){
+  const m={Infantil:'bi',Mirim:'bm','Iniciação':'bn'};
+  return`<span class="badge ${m[c]||'bx'}">${c}</span>`;
+}
+function fmtData(s){if(!s)return'—';const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;}
+
+// ===== DASHBOARD =====
+function renderDash(){
+  const todos=DB.alunos();
+  const pend=todos.filter(a=>a.sitMens==='Pendente');
+  const pagos=todos.filter(a=>a.sitMens==='Pago');
+  const totalMens=todos.reduce((s,a)=>s+(a.mens||0),0);
+  document.getElementById('cards-dash').innerHTML=`
+    <div class="card"><div class="card-label">Total de Alunos</div><div class="card-val cv">${todos.length}</div><div class="card-sub">Matrículas ativas</div></div>
+    <div class="card"><div class="card-label">Mensalidade/mês</div><div class="card-val">R$ ${totalMens.toFixed(0)}</div><div class="card-sub">valor esperado</div></div>
+    <div class="card"><div class="card-label">Mensalidades Pagas</div><div class="card-val cv">${pagos.length}</div><div class="card-sub">${pagos.length} alunos</div></div>
+    <div class="card"><div class="card-label">Em Aberto</div><div class="card-val cr">${pend.length}</div><div class="card-sub">com pendência</div></div>`;
+  ['Infantil','Mirim','Iniciação'].forEach((c,i)=>{
+    const n=todos.filter(a=>a.cat===c).length;
+    const anos=['2010–2012','2012–2013','2014–2020'][i];
+    document.getElementById('cards-cat').innerHTML+=`<div class="card"><div class="card-label">${c}</div><div class="card-val">${n}</div><div class="card-sub">${anos}</div></div>`;
+  });
+  const tb=document.getElementById('tb-pend-dash');
+  tb.innerHTML=pend.length?pend.map(a=>`<tr><td><strong>${a.nome}</strong></td><td>${badgeCat(a.cat)}</td><td>R$ ${(a.mens||0).toFixed(2).replace('.',',')}</td><td><span class="badge bpd">Pendente</span></td></tr>`).join(''):'<tr><td colspan="4" class="t-vazio">Nenhuma pendência no momento ✓</td></tr>';
+}
+
+// ===== ALUNOS =====
+function renderAlunos(){
+  let d=DB.alunos();
+  const b=(document.getElementById('busca').value||'').toLowerCase();
+  const fc=document.getElementById('fil-cat').value;
+  const fs=document.getElementById('fil-sit').value;
+  if(b)d=d.filter(a=>a.nome.toLowerCase().includes(b));
+  if(fc)d=d.filter(a=>a.cat===fc);
+  if(fs)d=d.filter(a=>a.sitMens===fs);
+  const tb=document.getElementById('tb-alunos');
+  if(!d.length){tb.innerHTML='<tr><td colspan="7" class="t-vazio">Nenhum aluno encontrado.</td></tr>';return;}
+  tb.innerHTML=d.map(a=>`<tr>
+    <td><strong>${a.nome}</strong></td>
+    <td style="font-size:12px;color:var(--cinza)">${fmtData(a.nasc)}</td>
+    <td>${badgeCat(a.cat)}</td>
+    <td style="font-size:12px">${a.treino}</td>
+    <td>R$ ${(a.mens||0).toFixed(2).replace('.',',')}</td>
+    <td>
+      <select class="badge ${a.sitMens==='Pago'?'bpg':'bpd'}" onchange="trocarSit('${a.id}',this)" style="border:none;cursor:pointer;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">
+        <option ${a.sitMens!=='Pago'?'selected':''}>Pendente</option>
+        <option ${a.sitMens==='Pago'?'selected':''}>Pago</option>
+      </select>
+    </td>
+    <td><div style="display:flex;gap:6px">
+      <button class="btn btn-o btn-sm" onclick="verDet('${a.id}')">Ver</button>
+      <button class="btn btn-r btn-sm" onclick="abrirDesl('${a.id}')">Desligar</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function trocarSit(id,sel){
+  const d=DB.alunos();const i=d.findIndex(a=>a.id===id);
+  if(i<0)return;
+  d[i].sitMens=sel.value;
+  sel.className='badge '+(sel.value==='Pago'?'bpg':'bpd');
+  DB.salvarA(d);
+}
+
+// ===== DETALHES =====
+function verDet(id){
+  const a=DB.alunos().find(x=>x.id===id);if(!a)return;
+  document.getElementById('det-nome').textContent=a.nome;
+  document.getElementById('det-corpo').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+      <div><strong>Categoria</strong><br>${badgeCat(a.cat)}</div>
+      <div><strong>Nascimento</strong><br>${fmtData(a.nasc)}</div>
+      <div><strong>Posição</strong><br>${a.pos||'—'}</div>
+      <div><strong>Treino</strong><br>${a.treino}</div>
+      <div><strong>Peso</strong><br>${a.peso?a.peso+' kg':'—'}</div>
+      <div><strong>Altura</strong><br>${a.altura?a.altura+' cm':'—'}</div>
+      <div><strong>RG</strong><br>${a.rg||'—'}</div>
+      <div><strong>CPF</strong><br>${a.cpf||'—'}</div>
+      <div><strong>Pai</strong><br>${a.pai||'—'}</div>
+      <div><strong>Mãe</strong><br>${a.mae||'—'}</div>
+      <div><strong>Contato</strong><br>${a.contato||'—'}</div>
+      <div><strong>Pagto. matrícula</strong><br>${a.pgto||'—'}</div>
+      <div><strong>Mensalidade</strong><br>R$ ${(a.mens||0).toFixed(2).replace('.',',')}</div>
+      <div><strong>Situação</strong><br><span class="badge ${a.sitMens==='Pago'?'bpg':'bpd'}">${a.sitMens}</span></div>
+      ${a.desc2?'<div style="grid-column:span 2;color:var(--verde);font-size:12px">✓ Desconto 10% aplicado (2º aluno)</div>':''}
+    </div>`;
+  document.getElementById('ov-det').style.display='flex';
+}
+
+// ===== FORMULÁRIO INSCRIÇÃO =====
+function detectarCat(){
+  const v=document.getElementById('f-nasc').value;
+  if(!v)return;
+  document.getElementById('f-cat').value=getCategoria(v);
+  calcMens();
+}
+function calcMens(){
+  const t=document.getElementById('f-treino').value;
+  const ir=document.getElementById('f-irmao').value;
+  const r=document.getElementById('resumo-mens');
+  if(!t){r.style.display='none';return;}
+  let m=t==='sabado'?120:150;
+  let desc=0;
+  if(ir==='sim'&&t!=='sabado'){desc=m*.1;m-=desc;}
+  r.style.display='block';
+  r.innerHTML=`<p><strong>📋 Resumo de valores</strong></p>
+    <p style="margin-top:6px">Inscrição: R$ 100,00 (única vez)</p>
+    <p>Uniforme: R$ 150,00 (única vez)</p>
+    <p>Mensalidade base: R$ ${t==='sabado'?'120,00':'150,00'}</p>
+    ${desc>0?`<p style="color:var(--verde)">Desconto 2º aluno: − R$ ${desc.toFixed(2).replace('.',',')}</p>`:''}
+    <p style="margin-top:8px;font-size:15px"><strong>Mensalidade final: R$ ${m.toFixed(2).replace('.',',')}/mês</strong></p>`;
+}
+function limparForm(){
+  ['f-nome','f-nasc','f-cat','f-peso','f-altura','f-rg','f-cpf','f-pai','f-mae','f-contato'].forEach(id=>document.getElementById(id).value='');
+  ['f-pos','f-treino','f-irmao','f-pgto'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  document.getElementById('f-sit').value='Pendente';
+  document.getElementById('resumo-mens').style.display='none';
+}
+function salvarAluno(){
+  const nome=document.getElementById('f-nome').value.trim();
+  const nasc=document.getElementById('f-nasc').value;
+  const cat=document.getElementById('f-cat').value;
+  const pos=document.getElementById('f-pos').value;
+  const treino=document.getElementById('f-treino').value;
+  if(!nome||!nasc||!treino||!pos){alert('Preencha: nome, nascimento, posição e treino.');return;}
+  if(cat==='Fora de faixa'){alert('Ano fora das categorias da escola (2010–2020).');return;}
+  const ir=document.getElementById('f-irmao').value;
+  let mens=treino==='sabado'?120:150;
+  if(ir==='sim'&&treino!=='sabado')mens*=0.9;
+  const aluno={
+    id:Date.now().toString(),nome,nasc,cat,pos,treino:treino==='sabado'?'Somente Sáb':'Ter · Qui · Sáb',
+    peso:document.getElementById('f-peso').value,
+    altura:document.getElementById('f-altura').value,
+    rg:document.getElementById('f-rg').value.trim(),
+    cpf:document.getElementById('f-cpf').value.trim(),
+    pai:document.getElementById('f-pai').value.trim(),
+    mae:document.getElementById('f-mae').value.trim(),
+    contato:document.getElementById('f-contato').value.trim(),
+    pgto:document.getElementById('f-pgto').value,
+    sitMens:document.getElementById('f-sit').value,
+    mens,desc2:ir==='sim',
+    criadoEm:new Date().toLocaleDateString('pt-BR')
+  };
+  const d=DB.alunos();d.push(aluno);DB.salvarA(d);
+  alert(`✅ ${nome} matriculado!\nCategoria: ${cat}\nMensalidade: R$ ${mens.toFixed(2).replace('.',',')}`);
+  limparForm();irPara('alunos');
+}
+
+// ===== DESLIGAR =====
+function abrirDesl(id){
+  document.getElementById('id-desl').value=id;
+  document.getElementById('mot-desl').value='';
+  document.getElementById('ov-desl').style.display='flex';
+}
+function confirmarDesl(){
+  const id=document.getElementById('id-desl').value;
+  const mot=document.getElementById('mot-desl').value.trim()||'Não informado';
+  const d=DB.alunos();const i=d.findIndex(a=>a.id===id);if(i<0)return;
+  const aluno=d.splice(i,1)[0];DB.salvarA(d);
+  const in2=DB.inativos();
+  in2.push({...aluno,motivo:mot,desligadoEm:new Date().toLocaleDateString('pt-BR')});
+  DB.salvarI(in2);
+  document.getElementById('ov-desl').style.display='none';
+  renderAlunos();
+  alert(`${aluno.nome} foi desligado.`);
+}
+
+// ===== COBRANÇAS =====
+function renderCobr(){
+  const pend=DB.alunos().filter(a=>a.sitMens==='Pendente');
+  const el=document.getElementById('lista-cobr');
+  if(!pend.length){el.innerHTML='<div class="info" style="text-align:center">✅ Nenhuma mensalidade pendente.</div>';return;}
+  el.innerHTML=pend.map(a=>`
+    <div class="cobr">
+      <div><h4>${a.nome}</h4><p>${a.cat} · ${a.treino} · ${a.contato||'Sem contato'}</p></div>
+      <div class="cobr-val">R$ ${(a.mens||0).toFixed(2).replace('.',',')}</div>
+      <div class="cobr-ac">
+        <button class="btn btn-a btn-sm" onclick="notifAluno('${a.id}')">📲 Notificar</button>
+        <button class="btn btn-v btn-sm" onclick="marcarPago('${a.id}')">✓ Pago</button>
+      </div>
+    </div>`).join('');
+}
+function marcarPago(id){
+  const d=DB.alunos();const i=d.findIndex(a=>a.id===id);
+  if(i<0)return;d[i].sitMens='Pago';DB.salvarA(d);renderCobr();
+}
+function getMensagem(a){
+  const c=DB.cfg();
+  const venc=c.vencimento?`\n⏰ Vencimento: todo dia ${c.vencimento} do mês.`:'';
+  const pix=c.pix?`\n💳 PIX: ${c.pix}`:'';
+  const tel=c.telefone?`\n📞 Contato: ${c.telefone}`:'';
+  return`Olá${a.pai?' '+a.pai.split(' ')[0]:''}!
+
+Passando para avisar que a mensalidade de *${a.nome}* está em aberto.
+
+📋 Detalhes:
+• Categoria: ${a.cat}
+• Treino: ${a.treino}
+• Valor: R$ ${(a.mens||0).toFixed(2).replace('.',',')}${venc}
+
+Formas de pagamento: Dinheiro, PIX ou Cartão.${pix}${tel}
+
+Obrigado! ⚽
+*Escola de Futebol Nova Opção*`;
+}
+function notifAluno(id){
+  const a=DB.alunos().find(x=>x.id===id);if(!a)return;
+  document.getElementById('txt-notif').value=getMensagem(a);
+  document.getElementById('ov-notif').style.display='flex';
+}
+function notifTodos(){
+  const pend=DB.alunos().filter(a=>a.sitMens==='Pendente');
+  if(!pend.length){alert('Nenhum aluno com pendência.');return;}
+  document.getElementById('txt-notif').value=pend.map(getMensagem).join('\n\n───────────\n\n');
+  document.getElementById('ov-notif').style.display='flex';
+}
+function copiarNotif(){
+  const t=document.getElementById('txt-notif');t.select();
+  document.execCommand('copy');
+  alert('Texto copiado! Cole no WhatsApp.');
+}
+
+// ===== EX-ALUNOS =====
+function renderInat(){
+  const d=DB.inativos();
+  const tb=document.getElementById('tb-inativos');
+  tb.innerHTML=d.length?d.map(a=>`<tr>
+    <td><strong>${a.nome}</strong></td>
+    <td><span class="badge bx">${a.cat}</span></td>
+    <td style="font-size:12px">${a.contato||'—'}</td>
+    <td style="font-size:12px;color:var(--cinza)">${a.motivo}</td>
+    <td style="font-size:12px">${a.desligadoEm}</td>
+  </tr>`).join(''):'<tr><td colspan="5" class="t-vazio">Nenhum ex-aluno registrado.</td></tr>';
+}
+
+// ===== CONFIGURAÇÕES =====
+function renderConfig(){
+  const cfg=DB.cfg();
+  const grid=document.getElementById('dias-grid');
+  grid.innerHTML='';
+  for(let d=1;d<=28;d++){
+    const btn=document.createElement('button');
+    btn.className='dia-btn'+(cfg.vencimento==d?' selecionado':'');
+    btn.textContent=d;
+    btn.onclick=()=>selecionarDia(d);
+    grid.appendChild(btn);
+  }
+  if(cfg.pix)document.getElementById('cfg-pix').value=cfg.pix;
+  if(cfg.telefone)document.getElementById('cfg-tel').value=cfg.telefone;
+}
+function selecionarDia(d){
+  DB.salvarC({vencimento:d});
+  document.querySelectorAll('.dia-btn').forEach(b=>{
+    b.classList.toggle('selecionado',parseInt(b.textContent)===d);
+  });
+  const ok=document.getElementById('cfg-ok');
+  ok.style.display='block';
+  ok.textContent=`✓ Vencimento definido para o dia ${d} de cada mês.`;
+}
+function salvarCfg(){
+  DB.salvarC({
+    pix:document.getElementById('cfg-pix').value,
+    telefone:document.getElementById('cfg-tel').value
+  });
+}
+
+// ===== INIT =====
+// Injetar logo salva ou usar base64 direto
+(function injetarLogo(){
+  const img=document.getElementById('logo-img');
+  if(img) img.src='LOGO_PLACEHOLDER';
+})();
+
+renderDash();
+</script>
+</body>
+</html>
